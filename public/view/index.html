@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="uk" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Історія залізниці України</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class' };
+  </script>
+</head>
+<body class="bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200">
+  <!-- Header -->
+  <header class="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-50">
+    <div class="container mx-auto flex items-center justify-between p-4">
+      <h1 id="site-title" class="text-2xl font-semibold">Історія залізниці України</h1>
+      <nav class="space-x-4">
+        <a id="nav-intro" href="#intro" class="hover:text-green-600">Головна</a>
+        <a id="nav-periods" href="#periods" class="hover:text-green-600">Періоди</a>
+        <a id="nav-timeline" href="#timeline" class="hover:text-green-600">Хронологія</a>
+        <a id="nav-facts" href="#facts" class="hover:text-green-600">Цікаві факти</a>
+        <a id="nav-gallery" href="#gallery" class="hover:text-green-600">Галерея</a>
+      </nav>
+      <div class="flex items-center space-x-2">
+        <button id="lang-toggle" class="px-2 py-1 bg-green-600 text-white rounded">EN</button>
+        <button id="theme-toggle" class="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded">☾</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container mx-auto mt-8 p-4 space-y-16">
+    <!-- Intro + Quiz Promo -->
+    <section id="intro" class="prose prose-lg dark:prose-invert mx-auto space-y-6">
+      <div>
+        <h2 id="intro-title">Вступ</h2>
+        <p id="intro-desc">Ласкаво просимо на сайт «Історія залізниці України»! Тут ви знайдете докладний огляд розвитку залізничного транспорту від перших колій до сучасних інновацій.</p>
+      </div>
+      <div>
+        <input type="search" id="search" placeholder="Пошук..." class="w-full p-2 border rounded" />
+      </div>
+      <!-- Quiz Promo -->
+      <div id="quiz-promo" class="bg-gradient-to-r from-green-400 to-blue-500 text-white rounded-2xl p-8 shadow-lg text-center">
+        <h2 id="quiz-promo-title" class="text-4xl font-extrabold mb-4">Перевір свої знання!</h2>
+        <p id="quiz-promo-desc" class="mb-6 text-lg">Пройди коротку вікторину з історії залізниці України та дізнайся, наскільки ти експерт у темі.</p>
+        <div class="inline-flex space-x-4">
+          <button id="open-quiz" class="px-6 py-3 bg-white text-green-600 font-semibold rounded-full hover:bg-gray-100 transition">Почати вікторину</button>
+          <button id="open-rules" class="px-6 py-3 bg-transparent border-2 border-white text-white font-semibold rounded-full hover:bg-white hover:text-blue-500 transition">Деталі правил</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Historical Periods -->
+    <section id="periods">
+      <h2 class="text-3xl font-semibold mb-4" id="periods-title">Історичні періоди</h2>
+      <div id="period-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </section>
+
+    <!-- Timeline with Slider -->
+    <section id="timeline">
+      <h2 class="text-3xl font-semibold mb-4" id="timeline-title">Інтерактивна хронологія</h2>
+      <input type="range" id="year-slider" min="1850" max="2025" value="2025" class="w-full mb-4" />
+      <p class="text-center"><span id="timeline-label">Показані події до року:</span> <span id="slider-value">2025</span></p>
+      <div id="timeline-items" class="overflow-x-auto whitespace-nowrap py-4 space-x-4"></div>
+    </section>
+
+    <!-- Photo Gallery Carousel with Fade Animation -->
+    <section id="gallery" class="my-16 mx-auto container px-4">
+      <h2 class="text-3xl font-semibold mb-4 text-center" id="gallery-title">Галерея</h2>
+      <div class="relative">
+        <img id="gallery-img" src="images/17.jpg" class="w-full rounded transition-opacity duration-700 ease-in-out opacity-100" />
+        <button id="prev-img" class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-800 bg-opacity-50 text-white p-2 rounded-r">‹</button>
+        <button id="next-img" class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-800 bg-opacity-50 text-white p-2 rounded-l">›</button>
+      </div>
+    </section>
+
+    <!-- Styled Facts -->
+    <section id="facts" class="my-16 mx-auto container px-4">
+      <h2 class="text-3xl font-semibold mb-8 text-center" id="facts-title">Цікаві факти</h2>
+      <div id="facts-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+    </section>
+  </main>
+
+  <!-- Rules Modal -->
+  <div id="rules-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-11/12 md:w-1/3 p-6">
+      <h3 id="rules-title" class="text-2xl font-bold mb-4">Правила вікторини</h3>
+      <ul id="rules-list" class="list-disc list-inside mb-6"></ul>
+      <button id="close-rules" class="mt-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Закрити</button>
+    </div>
+  </div>
+
+  <!-- Quiz Modal -->
+  <div id="quiz-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-11/12 md:w-1/2 p-6">
+      <h3 id="quiz-question" class="text-xl font-semibold mb-4"></h3>
+      <input id="quiz-answer" type="text" placeholder="Введи відповідь тут" class="w-full p-2 border rounded mb-4" />
+      <div class="flex justify-between">
+        <button id="quiz-next" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Наступне</button>
+        <button id="quiz-close" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">Вихід</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="bg-white dark:bg-gray-800 shadow-inner mt-16">
+    <div id="footer-text" class="container mx-auto p-4 text-center text-sm">© 2025 Історія залізниці України</div>
+  </footer>
+
+
+  <script src="/js/getAllData.js"></script>
+</body>
+</html>
