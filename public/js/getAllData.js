@@ -68,48 +68,45 @@ document.addEventListener('DOMContentLoaded', async () => {
       '<p class="text-red-500">Не вдалося завантажити хронологію</p>';
   }
 
- // ————————————————
-// 4) Галерея
-// ————————————————
-try {
-  const galRes = await fetch('http://127.0.0.1:8000/gallery');
-  if (!galRes.ok) throw new Error(`Gallery HTTP ${galRes.status}`);
-  const gallery = await galRes.json(); // [{ path: "http://127.0.0.1:8000/storage/gallery/..." }, ...]
+  // ————————————————
+  // 4) Галерея
+  // ————————————————
+  try {
+    const galRes = await fetch('http://127.0.0.1:8000/gallery');
+    if (!galRes.ok) throw new Error(`Gallery HTTP ${galRes.status}`);
+    const gallery = await galRes.json();
+    let idx = 0;
+    const imgEl = document.getElementById('gallery-img');
+    const prevBtn = document.getElementById('prev-img');
+    const nextBtn = document.getElementById('next-img');
 
-  let idx = 0;
-  const imgEl   = document.getElementById('gallery-img');
-  const prevBtn = document.getElementById('prev-img');
-  const nextBtn = document.getElementById('next-img');
+    function showImage(i) {
+      imgEl.classList.remove('opacity-100');
+      imgEl.classList.add('opacity-0');
+      setTimeout(() => {
+        imgEl.src = gallery[i].path;
+        imgEl.onload = () => {
+          imgEl.classList.remove('opacity-0');
+          imgEl.classList.add('opacity-100');
+        };
+      }, 300);
+    }
 
-  function showImage(i) {
-    imgEl.classList.remove('opacity-100');
-    imgEl.classList.add('opacity-0');
-    setTimeout(() => {
-      // Тепер просто підставляємо повний URL:
-      imgEl.src = gallery[i].path;
-      imgEl.onload = () => {
-        imgEl.classList.remove('opacity-0');
-        imgEl.classList.add('opacity-100');
-      };
-    }, 300);
+    prevBtn.addEventListener('click', () => {
+      idx = (idx - 1 + gallery.length) % gallery.length;
+      showImage(idx);
+    });
+    nextBtn.addEventListener('click', () => {
+      idx = (idx + 1) % gallery.length;
+      showImage(idx);
+    });
+
+    // Показати перше
+    showImage(0);
+  } catch (e) {
+    console.error('Помилка fetch gallery:', e);
+    document.getElementById('gallery-img').alt = 'Не вдалося завантажити галерею';
   }
-
-  prevBtn.addEventListener('click', () => {
-    idx = (idx - 1 + gallery.length) % gallery.length;
-    showImage(idx);
-  });
-  nextBtn.addEventListener('click', () => {
-    idx = (idx + 1) % gallery.length;
-    showImage(idx);
-  });
-
-  // Показати перше зображення
-  showImage(0);
-} catch (e) {
-  console.error('Помилка fetch gallery:', e);
-  document.getElementById('gallery-img').alt = 'Не вдалося завантажити галерею';
-}
-
 
   // ————————————————
   // 5) Вікторина
@@ -180,8 +177,26 @@ try {
     });
   });
 
+    // ————————————————
+  // 7) Пошук по періодах
   // ————————————————
-  // 7) Мова та тема, пошук — при бажанні реалізувати тут
+   // ————————————————
+  // 7) Пошук по історичних періодах
   // ————————————————
-  // (Тут можна додати updateStaticTexts та toggle lang/theme/search)
+  const searchInput = document.getElementById('search');
+  searchInput.addEventListener('input', (e) => {
+    const q = e.target.value.trim().toLowerCase();
+    document.querySelectorAll('#period-list > div').forEach((card) => {
+      const text = card.textContent.toLowerCase();
+      card.style.display = text.includes(q) ? '' : 'none';
+    });
+  });
+
+
+  // ————————————————
+  // 8) Перемикання теми
+  // ————————————————
+  document.getElementById('theme-toggle').onclick = () => {
+    document.documentElement.classList.toggle('dark');
+  };
 });
